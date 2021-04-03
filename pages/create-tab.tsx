@@ -4,7 +4,7 @@ import styles from '../styles/CreateTab.module.css'
 
 const CreateTab = () => {
   return (<div className={styles.title}>
-    <h3>Upload an mp3 file of the track</h3>
+    <h3>Upload your guitar track</h3>
     <input
         accept="image/*"
         style={{display: 'none'}}
