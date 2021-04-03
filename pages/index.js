@@ -9,7 +9,7 @@ export default function Home({ isConnected, data }) {
   )
 }
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   
   const result = await fetch(`${server}/api/users`)
 
