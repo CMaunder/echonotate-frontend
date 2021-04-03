@@ -1,4 +1,3 @@
-import { connectToDatabase } from "../util/mongodb";
 import welcomeStyles from "../styles/Welcome.module.css"
 
 const Welcome = ({isConnected, users}) => {
@@ -22,23 +21,6 @@ const Welcome = ({isConnected, users}) => {
         </div>
     )
 }
-
-
-export async function getServerSideProps() {
-  const { db } = await connectToDatabase();
-  console.log(`users in from the database ${users}`)
-  const users = await db
-    .collection("users")
-    .find({})
-    .toArray();
-  console.log(`users in from the database ${users}`)
-  return {
-    props: {
-      users: users,
-    },
-  };
-}
-
 
 
 export default Welcome;

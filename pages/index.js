@@ -1,20 +1,21 @@
 import Welcome from '../components/Welcome'
-import { connectToDatabase } from '../util/mongodb'
+import { server } from '../config/index'
 
-export default function Home({ isConnected }) {
+export default function Home({ isConnected, data }) {
   return (
     <>
-      <Welcome isConnected={isConnected}/>
+      <Welcome isConnected={isConnected} users={data}/>
     </>
   )
 }
 
-export async function getServerSideProps(context) {
-  const { client } = await connectToDatabase()
+export const getServerSideProps = async () => {
+  
+  const result = await fetch(`${server}/api/users`)
 
-  const isConnected = await client.isConnected()
-
+  const data = await result.json()
+  console.log(data)
   return {
-    props: { isConnected },
+    props: {data}
   }
 }
