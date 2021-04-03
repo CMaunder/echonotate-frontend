@@ -4,7 +4,7 @@ const Welcome = () => {
     return (
     <div>
       <h1 className={welcomeStyles.title}>
-        Welcome to Tabscribe, coming soon...
+        Welcome to Tabscribe, a brand new guitar tab generator, coming soon...
       </h1>
     </div>
   )
