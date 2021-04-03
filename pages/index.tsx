@@ -1,5 +1,6 @@
 import Welcome from '../components/Welcome'
-import { server } from '../config/index'
+// import { GetStaticProps } from 'next'
+// import { server } from '../config/index'
 
 export default function Home() {
   return (
@@ -11,7 +12,7 @@ export default function Home() {
 
 
 //example of getStaticProps, for reference
-// export const getStaticProps = async () => {
+// export const getStaticProps: GetStaticProps = async () => {
   
 //   const result = await fetch(`${server}/api/users`)
 
