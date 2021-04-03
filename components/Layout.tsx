@@ -1,4 +1,4 @@
-import Meta from '../components/Meta'
+import Meta from './Meta'
 import styles from '../styles/Layout.module.css'
 
 const Layout = ({children}) => {
