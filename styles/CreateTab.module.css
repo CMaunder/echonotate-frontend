@@ -1,0 +1,8 @@
+.title {
+  color: black;
+  margin-top: -10%;
+  font-size: 1.2rem;
+  text-align: flex-start;
+  flex-direction: column;
+  text-align: center;
+}
