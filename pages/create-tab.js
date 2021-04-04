@@ -1,12 +1,11 @@
 import { Button } from '@material-ui/core'
 import React, { MouseEvent, useState } from 'react'
-import axios from 'axios'
 import styles from '../styles/CreateTab.module.css'
 
 const CreateTab = () => {
-  const [audioFile, setAudioFile] = useState<File>();
+  const [audioFile, setAudioFile] = useState();
 
-  const handleFileSelect = (event : React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (event) => {
     setAudioFile(event.target.files[0])
   }
 
@@ -14,19 +13,30 @@ const CreateTab = () => {
     uploadFile().then(data => {
       console.log(data)
     })  
-
   }
 
   const uploadFile = async () => {
+    const file = audioFile;
+    const filename = encodeURIComponent(file.name);
+    const res = await fetch(`/api/upload-audio-file?file=${filename}`);
+    const { url, fields } = await res.json();
     const formData = new FormData();
-    formData.append('file',audioFile)
-    const res = await axios.post('/api/upload-audio-file', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    return await res
-  }
+
+    Object.entries({ ...fields, file }).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    const upload = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    });
+    console.log(upload)
+    if (upload.ok) {
+      console.log('Uploaded successfully!');
+    } else {
+      console.error('Upload failed.');
+    }
+  };
 
   return (<div className={styles.title}>
     <h3>Upload your guitar track</h3>
