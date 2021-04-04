@@ -3,7 +3,12 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import AudioFilePreUpload from '../components/AudioFilePreUpload'
 import styles from '../styles/CreateTab.module.css'
+import { Steps } from 'antd';
+import { UserOutlined, SolutionOutlined, LoadingOutlined, SmileOutlined , CloudUploadOutlined, CheckCircleOutlined} from '@ant-design/icons';
+import 'antd/dist/antd.css';
 
+
+const {Step} = Steps
 const CreateTab = () => {
   const [audioFile, setAudioFile] = useState<File>();
 
@@ -59,7 +64,16 @@ const CreateTab = () => {
     setAudioFile(undefined)
   }
 
-  return (<div className={styles.title}>
+  return (<div >
+
+
+<Steps>
+    <Step status="finish" title="Upload Track" icon={<CloudUploadOutlined />} />
+    <Step status="process" title="View Suggested Tabs" icon={<SolutionOutlined />} />
+    <Step status="wait" title="Pick Your Tab" icon={<CheckCircleOutlined />} />
+    <Step status="wait" title="Pick Your Tab" icon={<LoadingOutlined />} />
+  </Steps>
+    <div className={styles.content}>
     <h3>Upload your guitar track</h3>
     <input
         accept=".mp3,audio/*"
@@ -83,6 +97,7 @@ const CreateTab = () => {
         color="primary" 
         onClick={handleFileSubmit}
         disabled={audioFile === undefined}>Submit</Button>
+    </div>
     </div>
   )
 }
