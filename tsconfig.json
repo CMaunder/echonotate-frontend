@@ -22,7 +22,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "middleware/mongodb.ts"  ],
+, "middleware/mongodb.ts", "pages/create-tab.jk"  ],
   "exclude": [
     "node_modules"
   ]
