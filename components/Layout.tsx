@@ -1,8 +1,5 @@
 import Meta from './Meta'
 import styles from '../styles/Layout.module.css'
-
-
-
 import React from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
@@ -48,7 +45,7 @@ function getStepContent(stepIndex: number, children:{children: React.ReactNode})
 }
 
 
-const Layout = ({children}:{children: React.ReactNode}) => {
+const Layout = ({children}) => {
 
 
   const classes = useStyles();
