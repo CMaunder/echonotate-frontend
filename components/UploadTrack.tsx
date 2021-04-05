@@ -57,7 +57,7 @@ const UploadTrack = forwardRef((props: {show: boolean, audioFile: File, setAudio
       data: body
     })
     console.log(res)
-    if(res.statusText === 'Created') {
+    if(res.status === 201) {
       console.log('Saved to DB successfully')
     } else {
       alert('Whoa, something went wrong...')
