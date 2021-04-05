@@ -8,12 +8,7 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+    minWidth: '200px'
   },
   title: {
     fontSize: 14,
@@ -25,8 +20,6 @@ const useStyles = makeStyles({
 
 const AudioFilePreUpload = ({audioFile, clearSelected}: {audioFile: File, clearSelected: Function}) => {
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
-
   return (
     audioFile === undefined ? <></> : 
     <Card className={classes.root}>
@@ -41,7 +34,7 @@ const AudioFilePreUpload = ({audioFile, clearSelected}: {audioFile: File, clearS
           Size: {audioFile.size}
         </Typography>
         <Typography variant="body2" component="p">
-          Is ready to convert to tab.
+          Is ready to convert to tab. Hit next to upload
         </Typography>
       </CardContent>
       <CardActions>

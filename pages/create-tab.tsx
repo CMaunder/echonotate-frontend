@@ -1,105 +1,131 @@
-import { Button } from '@material-ui/core'
-import axios from 'axios';
-import React, { useState } from 'react'
-import AudioFilePreUpload from '../components/AudioFilePreUpload'
-import styles from '../styles/CreateTab.module.css'
+import React, { useState, forwardRef, useRef, useImperativeHandle, ReactComponentElement } from 'react';
 import { Steps } from 'antd';
-import { UserOutlined, SolutionOutlined, LoadingOutlined, SmileOutlined , CloudUploadOutlined, CheckCircleOutlined} from '@ant-design/icons';
+import UploadTrack from '../components/UploadTrack';
+import { Button } from '@material-ui/core'
+import { SolutionOutlined, LoadingOutlined, CloudUploadOutlined, CheckCircleOutlined} from '@ant-design/icons';
+import styles from '../styles/CreateTab.module.css';
 import 'antd/dist/antd.css';
 
+const {Step} = Steps;
 
-const {Step} = Steps
+const stepperSteps = [
+  "Upload Track",
+  "View Suggested Tabs",
+  "Pick Your Tab",
+  "Pick Your Tab"
+];
+
+const stepIcons = [
+  <CloudUploadOutlined />,
+  <SolutionOutlined />,
+  <CheckCircleOutlined />,
+  <LoadingOutlined />
+];
+
+
+interface RefObject {
+  uploadFile: () => any
+}
+
 const CreateTab = () => {
+
+  const ref = useRef<RefObject>(null);
+
+  const [ currentStep, setCurrentStep ] = useState<number>(0);
   const [audioFile, setAudioFile] = useState<File>();
+  const [uploadingTrack, setUploadingTrack] = useState<boolean>(false);
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files.length === 0) {
-      return
-    }
-    const file = event.target.files[0]
-    const ext = file.name.split('.').pop();
-    console.log(file)
-    if ( file.size >= 1048576) {
-      alert('That file is too big, please select a smaller one')
-    } else if ( ext !== 'mp3' && ext !== 'wav' && ext !== 'm4a') {
-      alert("Please make sure your file is one of the following types: mp3, wav or m4a")
-    } else {
-      setAudioFile(file)
-    }
+  const getStepStatus: Function = (stepNumber: number) => {
+
+    let stepStatuses: Array<string> = ["process", "finish", "wait", "wait"];
+    if (currentStep === 0) {
+      stepStatuses = ["process", "wait", "wait", "wait"]
+    } else if (currentStep === 1) {
+      stepStatuses = ["finish", "process", "wait", "wait"]
+    } else if (currentStep === 2) {
+      stepStatuses = ["finish", "finish", "process", "wait"]
+    } else if (currentStep === 3) {
+      stepStatuses = ["finish", "finish", "finish", "process"]
+    } 
+    return stepStatuses[stepNumber]
   }
 
-  const handleFileSubmit = () => {
-    uploadFile().then(data => {
-      console.log(data)
-      setAudioFile(undefined)
-    })  
+  const getSteps = () => {
+    let arrSteps = [];
+    for (let i = 0; i<stepperSteps.length; i++) {
+      arrSteps.push(i)
+    }
+    return (
+    <Steps>
+      {arrSteps.map((i) => {
+        return <Step key={i} status={getStepStatus(i)} title={stepperSteps[i]} icon={getStepIcons(i)} />
+      })}
+    </Steps>);
+  };
+
+  const getStepIcons = (i): any  => {
+    if (i === 0 && uploadingTrack) {
+      return <LoadingOutlined />
+    }
+    return stepIcons[i]
+  };
+
+  const isNextDisabled = (): boolean => {
+    console.log(audioFile)
+    return ( audioFile === undefined);
   }
 
-  const uploadFile = async () => {
-    const file = audioFile;
-    const filename = encodeURIComponent(file.name);
-    const res = await axios.get<{url :string, fields: {[key:string]:string}}>(`/api/upload-audio-file?file=${filename}`);
-    const { url, fields } = res.data
-    const formData = new FormData();
+  const isBackDisabled = (): boolean => {
+    return currentStep <= 0;
+  }
 
-    Object.entries({ ...fields, file }).forEach(([key, value]) => {
-      console.log(key)
-      console.log(value)
-      formData.append(key, value);
-    });
-
-    const upload = await fetch(url, {
-      method: 'POST',
-      body: formData,
-    });
-    console.log(upload)
-    if (upload.ok) {
-      console.log('Uploaded successfully!');
+  const handleNextClick = () => {
+    if (currentStep === 0) {
+      if (ref.current) {
+        setUploadingTrack(true)
+        ref.current.uploadFile().then(data => {
+          console.log(data)
+          setAudioFile(undefined)
+          setUploadingTrack(false)
+          setCurrentStep(currentStep + 1);
+        })  
+      }
     } else {
-      console.error('Upload failed.');
+      setCurrentStep(currentStep + 1);
     }
   };
 
-  const clearSelected = () => {
-    setAudioFile(undefined)
-  }
+  const handleBackClick = () => {
+    setCurrentStep(currentStep - 1);
+  };
 
-  return (<div >
-
-
-<Steps>
-    <Step status="finish" title="Upload Track" icon={<CloudUploadOutlined />} />
-    <Step status="process" title="View Suggested Tabs" icon={<SolutionOutlined />} />
-    <Step status="wait" title="Pick Your Tab" icon={<CheckCircleOutlined />} />
-    <Step status="wait" title="Pick Your Tab" icon={<LoadingOutlined />} />
-  </Steps>
-    <div className={styles.content}>
-    <h3>Upload your guitar track</h3>
-    <input
-        accept=".mp3,audio/*"
-        style={{display: 'none'}}
-        id="contained-button-file"
-        multiple={false}
-        type="file"
-        onChange={handleFileSelect}
-      />
-      <label htmlFor="contained-button-file">
-        <Button variant="contained" component="span">
-          Browse
-        </Button>
-      </label>
-      <br />
-      <br />
-      <AudioFilePreUpload audioFile={audioFile} clearSelected={clearSelected}/>
-      <br />
-      <Button 
+  return (
+    <div >
+      {getSteps()}
+      <div className={styles.content}>
+        <UploadTrack show={currentStep===0} audioFile={audioFile} setAudioFile={setAudioFile} ref={ref}/>
+      </div>
+      <div className={styles.back}>
+      {currentStep > 0 && <Button 
+        variant="contained" 
+        onClick={handleBackClick}
+        disabled={isBackDisabled()}
+      >
+        Back
+      </Button>}
+      </div>
+      <div className={styles.next}>
+      {currentStep < stepperSteps.length - 1 && <Button 
         variant="contained" 
         color="primary" 
-        onClick={handleFileSubmit}
-        disabled={audioFile === undefined}>Submit</Button>
-    </div>
+        onClick={handleNextClick}
+        disabled={isNextDisabled()}
+      >
+        Next
+      </Button>}
+      </div>
     </div>
   )
-}
+};
 
-export default CreateTab
+export default CreateTab;

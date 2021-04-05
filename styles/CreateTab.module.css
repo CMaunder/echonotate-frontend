@@ -4,3 +4,15 @@
   font-size: 1.2rem;
   text-align: center;
 }
+
+.next {
+  position:absolute;
+  bottom:15%;
+  right:10%;
+}
+
+.back {
+  position:absolute;
+  bottom:15%;
+  left:10%;
+}
