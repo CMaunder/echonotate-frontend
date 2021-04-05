@@ -1,6 +1,7 @@
 import React, { useState, forwardRef, useRef, useImperativeHandle, ReactComponentElement } from 'react';
 import { Steps } from 'antd';
 import UploadTrack from '../components/UploadTrack';
+import ViewTabs from '../components/ViewTabs'
 import { Button } from '@material-ui/core'
 import { SolutionOutlined, LoadingOutlined, CloudUploadOutlined, CheckCircleOutlined} from '@ant-design/icons';
 import styles from '../styles/CreateTab.module.css';
@@ -11,15 +12,13 @@ const {Step} = Steps;
 const stepperSteps = [
   "Upload Track",
   "View Suggested Tabs",
-  "Pick Your Tab",
   "Pick Your Tab"
 ];
 
 const stepIcons = [
   <CloudUploadOutlined />,
   <SolutionOutlined />,
-  <CheckCircleOutlined />,
-  <LoadingOutlined />
+  <CheckCircleOutlined />
 ];
 
 
@@ -71,8 +70,7 @@ const CreateTab = () => {
   };
 
   const isNextDisabled = (): boolean => {
-    console.log(audioFile)
-    return ( audioFile === undefined);
+    return ( audioFile === undefined || uploadingTrack);
   }
 
   const isBackDisabled = (): boolean => {
@@ -83,8 +81,7 @@ const CreateTab = () => {
     if (currentStep === 0) {
       if (ref.current) {
         setUploadingTrack(true)
-        ref.current.uploadFile().then(data => {
-          console.log(data)
+        ref.current.uploadFile().then(() => {
           setAudioFile(undefined)
           setUploadingTrack(false)
           setCurrentStep(currentStep + 1);
@@ -104,9 +101,10 @@ const CreateTab = () => {
       {getSteps()}
       <div className={styles.content}>
         <UploadTrack show={currentStep===0} audioFile={audioFile} setAudioFile={setAudioFile} ref={ref}/>
+        <ViewTabs show={currentStep===1} />
       </div>
       <div className={styles.back}>
-      {currentStep > 0 && <Button 
+      {false && <Button 
         variant="contained" 
         onClick={handleBackClick}
         disabled={isBackDisabled()}
