@@ -8,7 +8,7 @@ const Welcome = () => {
     return 
   }
   return (
-    <div className={welcomeStyles.title}>
+    <div >
       <h1>
         Welcome to Tabscribe, a brand new guitar tab generator.
       </h1>
