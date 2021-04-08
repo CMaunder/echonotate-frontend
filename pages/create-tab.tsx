@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useRef, useImperativeHandle, ReactComponentElement } from 'react';
+import React, { useState, useRef } from 'react';
 import { Steps } from 'antd';
 import UploadTrack from '../components/UploadTrack';
 import ViewTabs from '../components/ViewTabs'
@@ -6,6 +6,7 @@ import { Button } from '@material-ui/core'
 import { SolutionOutlined, LoadingOutlined, CloudUploadOutlined, CheckCircleOutlined} from '@ant-design/icons';
 import styles from '../styles/CreateTab.module.css';
 import 'antd/dist/antd.css';
+import axios from 'axios';
 
 const {Step} = Steps;
 
@@ -21,7 +22,6 @@ const stepIcons = [
   <CheckCircleOutlined />
 ];
 
-
 interface RefObject {
   uploadFile: () => any
 }
@@ -33,6 +33,7 @@ const CreateTab = () => {
   const [ currentStep, setCurrentStep ] = useState<number>(0);
   const [audioFile, setAudioFile] = useState<File>();
   const [uploadingTrack, setUploadingTrack] = useState<boolean>(false);
+  const [tabData, setTabData ] = useState<JSON>();
 
   const getStepStatus: Function = (stepNumber: number) => {
 
@@ -81,7 +82,15 @@ const CreateTab = () => {
     if (currentStep === 0) {
       if (ref.current) {
         setUploadingTrack(true)
-        ref.current.uploadFile().then(() => {
+        ref.current.uploadFile().then(objectKey => {
+          axios({
+            method: 'GET',
+            url: '/api/track-info',
+            data: objectKey
+          }).then(resp => {
+            console.log(resp)
+            setTabData(resp.data)
+          })
           setAudioFile(undefined)
           setUploadingTrack(false)
           setCurrentStep(currentStep + 1);
@@ -101,7 +110,7 @@ const CreateTab = () => {
       {getSteps()}
       <div className={styles.content}>
         <UploadTrack show={currentStep===0} audioFile={audioFile} setAudioFile={setAudioFile} ref={ref}/>
-        <ViewTabs show={currentStep===1} />
+        <ViewTabs show={currentStep===1} tabData={tabData}/>
       </div>
       <div className={styles.back}>
       {false && <Button 

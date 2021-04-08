@@ -26,7 +26,7 @@ const UploadTrack = forwardRef((props: {show: boolean, audioFile: File, setAudio
     }
   };
 
-  const uploadFile = async () => {
+  const uploadFile = async (): Promise<string> => {
     const file = audioFile;
     const filename = encodeURIComponent(file.name);
     const res = await axios.get<{url :string, fields: {[key:string]:string}}>(`/api/upload-audio-file?file=${filename}`);
@@ -43,6 +43,7 @@ const UploadTrack = forwardRef((props: {show: boolean, audioFile: File, setAudio
     if (upload.ok) {
       console.log('Uploaded successfully!');
       saveTrackInfoToDB(fields);
+      return fields.key
     } else {
       console.error('Upload failed.');
       alert('Upload failed, please try again.')

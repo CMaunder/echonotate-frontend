@@ -14,13 +14,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .insertOne(objToSave);
     res.status(201).json(response.insertedId)
   } else if (req.method === 'GET') {
+    console.log(req.body)
     // if the track is uploaded to s3, get the predicted notes
     const trackInfo = {
       key: 'c-major-scale.mp3',
       user: 'Guest'
     }
     const token= jwt.sign({trackInfo}, 'charliesSecretKey', {expiresIn: '60s'})
-    // axois get request to http://localhost:5000/predicted-notes with token as Bearer Auth header
     const predictNotesRes = await axios({
       method: 'get',
       url: `${predictNotesUrl}/predicted-notes`,
