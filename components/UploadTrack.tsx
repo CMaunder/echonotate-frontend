@@ -19,8 +19,8 @@ const UploadTrack = forwardRef((props: {show: boolean, audioFile: File, setAudio
     const ext = file.name.split('.').pop();
     if ( file.size >= 1048576) {
       alert('That file is too big, please select a smaller one')
-    } else if ( ext !== 'mp3' && ext !== 'wav' && ext !== 'm4a') {
-      alert("Please make sure your file is one of the following types: mp3, wav or m4a")
+    } else if ( ext !== 'mp3') {// && ext !== 'wav' && ext !== 'm4a') {
+      alert("Please make sure your file is one of the following types: mp3") //, wav or m4a")
     } else {
       setAudioFile(file)
     }
