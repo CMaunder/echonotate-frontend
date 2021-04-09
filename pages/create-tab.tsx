@@ -84,12 +84,14 @@ const CreateTab = () => {
         setUploadingTrack(true)
         ref.current.uploadFile().then(objectKey => {
           axios({
-            method: 'GET',
+            method: 'POST',
             url: '/api/track-info',
             data: objectKey
           }).then(resp => {
-            console.log(resp)
             setTabData(resp.data)
+          }).catch(resp => {
+            alert(`Something went wrong... please try again`)
+            console.error(resp)
           })
           setAudioFile(undefined)
           setUploadingTrack(false)

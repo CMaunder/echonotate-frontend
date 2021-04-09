@@ -17,27 +17,32 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { db } = await connectToDatabase();
 
   if (req.method === 'PUT') {
+    //TODO check if the object already exists in s3, if so, dont re upload
     const objToSave = {... req.body, created: new Date()}
     const response = await db
     .collection("trackInfo")
     .insertOne(objToSave);
     res.status(201).json(response.insertedId)
-  } else if (req.method === 'GET') {
-    //console.log(req.body)
-    // if the track is uploaded to s3, get the predicted notes
+  } else if (req.method === 'POST') {
     const trackInfo = {
-      key: 'c-major-scale.mp3',
+      key: Object.keys(req.body)[0],
       user: 'Guest'
     }
-    const token= jwt.sign({trackInfo}, 'charliesSecretKey', {expiresIn: '60s'})
-    const predictNotesRes = await axios({
-      method: 'get',
-      url: `${predictNotesUrl}/predicted-notes`,
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-    res.status(200).send(predictNotesRes.data)
+    const token= jwt.sign({trackInfo}, process.env.AUTH_JWT_SECRET_KEY, {expiresIn: '30s'})
+    try {
+      const predictNotesRes = await axios({
+        method: 'get',
+        url: `${predictNotesUrl}/predicted-notes`,
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      res.status(200).send(predictNotesRes.data)
+    } catch (e) {
+      console.error(e.response.data)
+      res.status(403).send(e.response.data)
+    }
+  
 
 
 
