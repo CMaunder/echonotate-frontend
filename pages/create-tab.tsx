@@ -78,7 +78,7 @@ const CreateTab = () => {
     return currentStep <= 0;
   }
 
-  const handleNextClick = () => {
+  const handleNextClick = (): void => {
     if (currentStep === 0) {
       if (ref.current) {
         setUploadingTrack(true)
@@ -101,7 +101,7 @@ const CreateTab = () => {
     }
   };
 
-  const handleBackClick = () => {
+  const handleBackClick = (): void => {
     setCurrentStep(currentStep - 1);
   };
 

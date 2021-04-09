@@ -4,7 +4,7 @@ import { predictNotesUrl } from '../../config/index'
 import jwt from 'jsonwebtoken'
 import axios from "axios";
 import Cors from 'cors'
-import initMiddleware from '../../lib/init-middleware'
+import initMiddleware from '../../middleware/init-middleware'
 
 const cors = initMiddleware(
   Cors({
@@ -15,9 +15,6 @@ const cors = initMiddleware(
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res)
   const { db } = await connectToDatabase();
-  res.setHeader('Access-Control-Allow-Origin', '*'); // to enable calls from every domain 
-  res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE'); // allowed actiosn
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); 
 
   if (req.method === 'PUT') {
     const objToSave = {... req.body, created: new Date()}
