@@ -1,4 +1,4 @@
 const dev = process.env.NODE_ENV !== 'production';
 
 export const server = dev ? 'http://localhost:3000' : 'https://tabscribe.vercel.app'
-export const predictNotesUrl = dev ? 'http://localhost:5000' : 'http://18.130.228.3'
+export const predictNotesUrl = dev ? 'http://localhost:5000' : 'https://tabscribe-backend.com'
