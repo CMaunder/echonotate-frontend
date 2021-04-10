@@ -57,7 +57,6 @@ const UploadTrack = forwardRef((props: {show: boolean, audioFile: File, setAudio
       url: '/api/track-info',
       data: body
     })
-    console.log(res)
     if(res.status === 201) {
       console.log('Saved to DB successfully')
     } else {

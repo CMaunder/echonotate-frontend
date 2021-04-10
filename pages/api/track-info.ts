@@ -28,7 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       key: Object.keys(req.body)[0],
       user: 'Guest'
     }
-    const token= jwt.sign({trackInfo}, process.env.AUTH_JWT_SECRET_KEY, {expiresIn: '30s'})
+    const token= jwt.sign({trackInfo}, process.env.AUTH_JWT_SECRET_KEY, {expiresIn: '60s'})
     try {
       const predictNotesRes = await axios({
         method: 'get',
