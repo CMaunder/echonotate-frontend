@@ -10,6 +10,10 @@ import axios from 'axios';
 
 const {Step} = Steps;
 
+interface ITabData {
+  notes: Array<any>
+}
+
 const stepperSteps = [
   "Upload Track",
   "View Suggested Tabs",
@@ -33,7 +37,7 @@ const CreateTab = () => {
   const [ currentStep, setCurrentStep ] = useState<number>(0);
   const [audioFile, setAudioFile] = useState<File>();
   const [uploadingTrack, setUploadingTrack] = useState<boolean>(false);
-  const [tabData, setTabData ] = useState<JSON>();
+  const [tabData, setTabData ] = useState<ITabData>();
 
   const getStepStatus: Function = (stepNumber: number) => {
 
