@@ -10,7 +10,7 @@ const Welcome = () => {
   return (
     <div >
       <h1>
-        Welcome to Tabscribe, a brand new guitar tab generator.
+        Welcome to MusicMind, a brand new guitar tab generator.
       </h1>
       <h2>To get started</h2>
       <Link href='/create-tab'>
