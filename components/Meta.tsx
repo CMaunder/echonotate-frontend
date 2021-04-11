@@ -6,14 +6,14 @@ const Meta = ({title, keywords, description}:{title: string, keywords: string, d
       <meta name='keywords' content={keywords} />
       <meta name='description' content={description} />
       <meta charSet='utf-8' />
-      <link rel='icon' href='/favicon.ico' />
+      <link rel='icon' href='/echonotateicon2.png' />
       <title>{title}</title>
     </Head>
    
 }
 Meta.defaultProps = {
-    title: 'MusicMind',
-    keywords: 'guitar, tab',
+    title: 'echonotate',
+    keywords: 'guitar, tab, notes, transcription, transcribe',
     description: 'Generate guitar tabs from the notes you play'
 }    
 

@@ -1,18 +1,18 @@
 .content {
-  margin-top: 10%;
+  margin-top: 5%;
   color: black;
   font-size: 1.5rem;
   text-align: center;
 }
 
 .next {
-  position:absolute;
-  bottom:15%;
-  right:10%;
+  position: absolute;
+  bottom: 15%;
+  right: 10%;
 }
 
 .back {
-  position:absolute;
-  bottom:15%;
-  left:10%;
+  position: absolute;
+  bottom: 15%;
+  left: 10%;
 }
