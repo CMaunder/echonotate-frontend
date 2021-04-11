@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   },
 });
 
-const AudioFilePreUpload = ({audioFile, clearSelected}: {audioFile: File, clearSelected: Function}) => {
+const AudioFilePreUpload = ({audioFile}: {audioFile: File}) => {
   const classes = useStyles();
   return (
     audioFile === undefined ? <></> : 
@@ -31,15 +31,12 @@ const AudioFilePreUpload = ({audioFile, clearSelected}: {audioFile: File, clearS
           {audioFile.name} 
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          Size: {audioFile.size}
+          Size: {Math.floor(audioFile.size / 1024)} KB
         </Typography>
         <Typography variant="body2" component="p">
-          Is ready to convert to tab. Hit next to upload
+          Is ready to convert to tab, click next to proceed.
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button color="secondary" size="small" onClick={() => clearSelected()}>Clear</Button>
-      </CardActions>
     </Card>
   )
 }

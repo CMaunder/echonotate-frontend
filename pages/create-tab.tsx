@@ -1,27 +1,30 @@
-import React, { useState, forwardRef, useRef, useImperativeHandle, ReactComponentElement } from 'react';
+import React, { useState, useRef } from 'react';
 import { Steps } from 'antd';
 import UploadTrack from '../components/UploadTrack';
+import ViewTabs from '../components/ViewTabs'
 import { Button } from '@material-ui/core'
 import { SolutionOutlined, LoadingOutlined, CloudUploadOutlined, CheckCircleOutlined} from '@ant-design/icons';
 import styles from '../styles/CreateTab.module.css';
 import 'antd/dist/antd.css';
+import axios from 'axios';
 
 const {Step} = Steps;
+
+interface ITabData {
+  notes: Array<any>
+}
 
 const stepperSteps = [
   "Upload Track",
   "View Suggested Tabs",
-  "Pick Your Tab",
   "Pick Your Tab"
 ];
 
 const stepIcons = [
   <CloudUploadOutlined />,
   <SolutionOutlined />,
-  <CheckCircleOutlined />,
-  <LoadingOutlined />
+  <CheckCircleOutlined />
 ];
-
 
 interface RefObject {
   uploadFile: () => any
@@ -34,6 +37,7 @@ const CreateTab = () => {
   const [ currentStep, setCurrentStep ] = useState<number>(0);
   const [audioFile, setAudioFile] = useState<File>();
   const [uploadingTrack, setUploadingTrack] = useState<boolean>(false);
+  const [tabData, setTabData ] = useState<ITabData>();
 
   const getStepStatus: Function = (stepNumber: number) => {
 
@@ -71,20 +75,28 @@ const CreateTab = () => {
   };
 
   const isNextDisabled = (): boolean => {
-    console.log(audioFile)
-    return ( audioFile === undefined);
+    return ( audioFile === undefined || uploadingTrack);
   }
 
   const isBackDisabled = (): boolean => {
     return currentStep <= 0;
   }
 
-  const handleNextClick = () => {
+  const handleNextClick = (): void => {
     if (currentStep === 0) {
       if (ref.current) {
         setUploadingTrack(true)
-        ref.current.uploadFile().then(data => {
-          console.log(data)
+        ref.current.uploadFile().then(objectKey => {
+          axios({
+            method: 'POST',
+            url: '/api/track-info',
+            data: objectKey
+          }).then(resp => {
+            setTabData(resp.data)
+          }).catch(resp => {
+            alert(`Something went wrong... please try again`)
+            console.error(resp)
+          })
           setAudioFile(undefined)
           setUploadingTrack(false)
           setCurrentStep(currentStep + 1);
@@ -95,7 +107,7 @@ const CreateTab = () => {
     }
   };
 
-  const handleBackClick = () => {
+  const handleBackClick = (): void => {
     setCurrentStep(currentStep - 1);
   };
 
@@ -104,9 +116,10 @@ const CreateTab = () => {
       {getSteps()}
       <div className={styles.content}>
         <UploadTrack show={currentStep===0} audioFile={audioFile} setAudioFile={setAudioFile} ref={ref}/>
+        <ViewTabs show={currentStep===1} tabData={tabData}/>
       </div>
       <div className={styles.back}>
-      {currentStep > 0 && <Button 
+      {false && <Button 
         variant="contained" 
         onClick={handleBackClick}
         disabled={isBackDisabled()}

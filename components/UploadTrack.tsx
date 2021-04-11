@@ -17,17 +17,16 @@ const UploadTrack = forwardRef((props: {show: boolean, audioFile: File, setAudio
     }
     const file = event.target.files[0]
     const ext = file.name.split('.').pop();
-    console.log(file)
     if ( file.size >= 1048576) {
       alert('That file is too big, please select a smaller one')
-    } else if ( ext !== 'mp3' && ext !== 'wav' && ext !== 'm4a') {
-      alert("Please make sure your file is one of the following types: mp3, wav or m4a")
+    } else if ( ext !== 'mp3') {// && ext !== 'wav' && ext !== 'm4a') {
+      alert("Please make sure your file is one of the following types: mp3") //, wav or m4a")
     } else {
       setAudioFile(file)
     }
   };
 
-  const uploadFile = async () => {
+  const uploadFile = async (): Promise<string> => {
     const file = audioFile;
     const filename = encodeURIComponent(file.name);
     const res = await axios.get<{url :string, fields: {[key:string]:string}}>(`/api/upload-audio-file?file=${filename}`);
@@ -35,26 +34,36 @@ const UploadTrack = forwardRef((props: {show: boolean, audioFile: File, setAudio
     const formData = new FormData();
 
     Object.entries({ ...fields, file }).forEach(([key, value]) => {
-      console.log(key)
-      console.log(value)
       formData.append(key, value);
     });
-
     const upload = await fetch(url, {
       method: 'POST',
       body: formData,
     });
-    console.log(upload)
     if (upload.ok) {
       console.log('Uploaded successfully!');
+      saveTrackInfoToDB(fields);
+      return fields.key
     } else {
       console.error('Upload failed.');
+      alert('Upload failed, please try again.')
     }
   };
 
-  const clearSelected = () => {
-    setAudioFile(undefined)
+  const saveTrackInfoToDB = async (fields: any) => {
+    const body = {...fields, user: 'Guest'}
+    const res = await axios({
+      method: 'put',
+      url: '/api/track-info',
+      data: body
+    })
+    if(res.status === 201) {
+      console.log('Saved to DB successfully')
+    } else {
+      alert('Whoa, something went wrong...')
+    }
   };
+
   if (!show) {
     return <></>
   }
@@ -62,13 +71,14 @@ const UploadTrack = forwardRef((props: {show: boolean, audioFile: File, setAudio
     <div>
       <h3>Upload your guitar track</h3>
       <br/>
+      <br/>
       <input
         accept=".mp3,audio/*"
         style={{display: 'none'}}
         id="contained-button-file"
         multiple={false}
         type="file"
-        onChange={handleFileSelect}
+        onChange={e => handleFileSelect(e)}
       />
       <label htmlFor="contained-button-file">
         <Button variant="contained" component="span">
@@ -77,7 +87,7 @@ const UploadTrack = forwardRef((props: {show: boolean, audioFile: File, setAudio
       </label>
       <br />
       <br />
-      <AudioFilePreUpload audioFile={audioFile} clearSelected={clearSelected}/>
+      <AudioFilePreUpload audioFile={audioFile} />
       <br />
       
     </div>
