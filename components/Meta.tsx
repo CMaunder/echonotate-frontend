@@ -12,8 +12,8 @@ const Meta = ({title, keywords, description}:{title: string, keywords: string, d
    
 }
 Meta.defaultProps = {
-    title: 'MusicMind',
-    keywords: 'guitar, tab',
+    title: 'echonotate',
+    keywords: 'guitar, tab, notes, transcription, transcribe',
     description: 'Generate guitar tabs from the notes you play'
 }    
 

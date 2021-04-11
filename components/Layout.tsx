@@ -3,7 +3,7 @@ import styles from '../styles/Layout.module.css'
 
 const Layout = ({children}:{children: React.ReactNode}) => {
   return (<>
-    <Meta title='MusicMind'/>
+    <Meta title='Echonotate'/>
       <div className={styles.container}>
         <main className={styles.main}>
           {children}
@@ -12,5 +12,5 @@ const Layout = ({children}:{children: React.ReactNode}) => {
     </>
   )
 }
-
+ 
 export default Layout
