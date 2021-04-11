@@ -12,7 +12,7 @@ const ViewTabs = ({show, tabData}: {show: boolean, tabData: ITabData}) => {
   } else if (tabData === undefined) {
     return (
       <div>
-        Your track is being processed...
+        Echo-notating...
       </div>
     )
   } else {
