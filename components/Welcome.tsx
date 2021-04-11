@@ -9,10 +9,7 @@ const Welcome = () => {
   }
   return (
     <div >
-      <h1>
-        Welcome to EchoNotate, a brand new guitar tab generator.
-      </h1>
-      <h2>To get started</h2>
+      <h2>Welcome, let's get started.</h2>
       <Link href='/create-tab'>
       <Button 
         variant="contained" 
