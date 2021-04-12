@@ -11,7 +11,7 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Slide from '@material-ui/core/Slide';
 
-const appBarStyles = { background: 'transparent', boxShadow: 'none'}
+const appBarStyles = { background: 'white', opacity: '0.8'}
 
 function HideOnScroll({children}:{children: React.ReactElement}) {
   const trigger = useScrollTrigger();
