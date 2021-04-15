@@ -33,7 +33,7 @@ const Layout = ({children}:{children: React.ReactElement}) => {
       <AppBar style={appBarStyles}>
           <Toolbar>
           <Image
-            src='/echonotate2.png'
+            src='/echonotate_logo.pdf'
             alt="echonotate"
             width={190}
             height={32}
