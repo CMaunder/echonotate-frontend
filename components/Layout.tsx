@@ -11,7 +11,7 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Slide from '@material-ui/core/Slide';
 
-const appBarStyles = { background: 'white', opacity: '0.8'}
+const appBarStyles = { backgroundColor: 'rgba(224, 245, 248, 0.87)'}
 
 function HideOnScroll({children}:{children: React.ReactElement}) {
   const trigger = useScrollTrigger();
@@ -33,10 +33,11 @@ const Layout = ({children}:{children: React.ReactElement}) => {
       <AppBar style={appBarStyles}>
           <Toolbar>
           <Image
-            src='/echologo.png'
+            src='/echologo_nb.png'
             alt="echonotate"
-            width={100}
-            height={32}
+            width={140}
+            height={39}
+            quality={100}
           />
           </Toolbar>
         </AppBar>
