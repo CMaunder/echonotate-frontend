@@ -6,7 +6,7 @@ const Meta = ({title, keywords, description}:{title: string, keywords: string, d
       <meta name='keywords' content={keywords} />
       <meta name='description' content={description} />
       <meta charSet='utf-8' />
-      <link rel='icon' href='/echo_logo.png' style={{borderRadius: '100px'}}/>
+      <link rel='icon' href='/echoicon.png' style={{borderRadius: '100px'}}/>
       <title>{title}</title>
     </Head>
    
