@@ -11,7 +11,8 @@ const OpenSheetMusicDisplay = dynamic(
 )
 
 interface ITabData {
-  notes: Array<any>
+  notes: Array<any>,
+  xml: string
 }
 
 const ViewTabs = ({show, tabData}: {show: boolean, tabData: ITabData}) => {
@@ -23,7 +24,7 @@ const ViewTabs = ({show, tabData}: {show: boolean, tabData: ITabData}) => {
       <div>
         Echo-notating...
         <Paper>
-          <OpenSheetMusicDisplay file="MuzioClementi_SonatinaOpus36No1_Part2.xml" />
+          <OpenSheetMusicDisplay file={tabData.xml} />
         </Paper>
       </div>
     )
